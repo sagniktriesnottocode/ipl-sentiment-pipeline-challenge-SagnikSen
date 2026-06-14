@@ -1,0 +1,15 @@
+Required libraries for the project:
+
+scikit-learn
+pandas 
+numpy 
+matplotlib 
+joblib 
+
+Built-in functions used:
+json
+time
+os
+warnings
+pathlib
+copy
