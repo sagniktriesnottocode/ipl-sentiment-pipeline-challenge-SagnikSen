@@ -1,0 +1,174 @@
+{
+  "student_name": "Sagnik Sen",
+  "team_name": "Group 2",
+  "task_type": "entity_aware_sentiment_classification",
+  "dataset_used_for_initial_experiment": "ipl_sentiment_small_dataset.csv",
+  "target_labels": [
+    "negative",
+    "neutral",
+    "positive"
+  ],
+  "model_input_format": "subject_keyword + ' [SEP] ' + statement",
+  "hypothesis": "To choose the vectorizers and classifiers, i first understood the requirements, which was to find low complexity word-friendly vectorizers and classifiers. I initially planned on using Vader, which usually gives a better response in detecting both negative and positive sentiments, something which was lacking in multinomial nb. However i realised that the classifier fails to understand sarcasm. Complement nb is a great vectorizer for this problem too, it is the opposite of what multinomial nb does. Coming to vectorizers, I highly anticipated the tfidf word and character vectorizers to work, since tfidf gives different weightage to different tokens. However, on testing it, I found that the basic count vectorizer gives best results. I still stand by my previous understanding of tfidf working better when trained on a larger dataset. I used Hashing vectorizer because it is best for bigger datasets. I used linear svc and logistic regression as classifiers because they ideally pair well with tfidf, and logistic regression supported my hypothesis in the best and simplest way possible. Did not use kNN - slow predictor; textBlob - only works on formal direct sentences; ELMo, GloVe, word embedding - High Complexity",
+  "final_vectorizers": [
+    {
+      "id": "count_basic",
+      "name": "CountVectorizer Basic",
+      "family": "count",
+      "type": "CountVectorizer",
+      "params": {
+        "lowercase": true,
+        "max_features": 3000
+      },
+      "notes": "Simple frequency baseline. Good for seeing whether word counts are enough.",
+      "complexity": "low"
+    },
+    {
+      "id": "tfidf_word_1_2",
+      "name": "TF-IDF Word 1-2 grams",
+      "family": "tfidf_word",
+      "type": "TfidfVectorizer",
+      "params": {
+        "lowercase": true,
+        "ngram_range": [
+          1,
+          2
+        ],
+        "max_features": 4000
+      },
+      "notes": "Strong text baseline. Captures important words and short phrases.",
+      "complexity": "low"
+    },
+    {
+      "id": "tfidf_char_3_5",
+      "name": "TF-IDF Character 3-5 grams",
+      "family": "tfidf_char",
+      "type": "TfidfVectorizer",
+      "params": {
+        "analyzer": "char",
+        "ngram_range": [
+          3,
+          5
+        ],
+        "max_features": 5000
+      },
+      "notes": "Useful for typos, Hinglish, team abbreviations, and social media spelling.",
+      "complexity": "medium"
+    },
+    {
+      "id": "hashing_word",
+      "name": "HashingVectorizer Word",
+      "family": "hashing",
+      "type": "HashingVectorizer",
+      "params": {
+        "alternate_sign": false,
+        "n_features": 2048,
+        "lowercase": true
+      },
+      "notes": "Scalable vectorizer. Does not store vocabulary, useful for bigger datasets.",
+      "complexity": "medium"
+    }
+  ],
+  "final_classifiers": [
+    {
+      "id": "multinomial_nb",
+      "name": "Multinomial Naive Bayes",
+      "family": "probabilistic",
+      "type": "MultinomialNB",
+      "params": {},
+      "notes": "Very fast and strong baseline for text classification.",
+      "complexity": "low"
+    },
+    {
+      "id": "logreg_balanced",
+      "name": "Logistic Regression Balanced",
+      "family": "linear",
+      "type": "LogisticRegression",
+      "params": {
+        "max_iter": 1000,
+        "class_weight": "balanced",
+        "random_state": 42
+      },
+      "notes": "Simple, explainable, and often strong for TF-IDF features.",
+      "complexity": "low"
+    },
+    {
+      "id": "linear_svc",
+      "name": "LinearSVC",
+      "family": "margin_based",
+      "type": "LinearSVC",
+      "params": {
+        "random_state": 42
+      },
+      "notes": "Strong classical classifier for high-dimensional text data.",
+      "complexity": "medium"
+    },
+    {
+      "id": "complement_nb",
+      "name": "Complement Naive Bayes",
+      "family": "probabilistic",
+      "type": "ComplementNB",
+      "params": {},
+      "notes": "Good for imbalanced datasets, an improvement over MultinomialNB.",
+      "complexity": "low"
+    }
+  ],
+  "best_80R_pipeline": {
+    "rank": 1,
+    "vectorizer_id": "count_basic",
+    "vectorizer_name": "CountVectorizer Basic",
+    "vectorizer_family": "count",
+    "vectorizer_complexity": "low",
+    "classifier_id": "complement_nb",
+    "classifier_name": "Complement Naive Bayes",
+    "classifier_family": "probabilistic",
+    "classifier_complexity": "low",
+    "pipeline_id": "count_basic__complement_nb",
+    "status": "completed",
+    "accuracy": 0.7,
+    "macro_f1": 0.6904761904761906,
+    "weighted_f1": 0.6821428571428572,
+    "precision_macro": 0.6880952380952382,
+    "recall_macro": 0.7142857142857143,
+    "train_time_sec": 0.006082296371459961,
+    "prediction_time_sec": 0.0013537406921386719,
+    "model_size_kb": 25.8642578125,
+    "performance_score": 69.16071428571429,
+    "efficiency_score": 99.36499662399292,
+    "suitability_score": 100,
+    "final_score": 82.91139218194145,
+    "error": ""
+  },
+  "best_300R_pipeline": {
+    "rank_300R": 1,
+    "vectorizer_id": "count_basic",
+    "vectorizer_name": "CountVectorizer Basic",
+    "vectorizer_family": "count",
+    "vectorizer_complexity": "low",
+    "classifier_id": "multinomial_nb",
+    "classifier_name": "Multinomial Naive Bayes",
+    "classifier_family": "probabilistic",
+    "classifier_complexity": "low",
+    "pipeline_id": "count_basic__multinomial_nb",
+    "status": "completed",
+    "accuracy": 1.0,
+    "macro_f1": 1.0,
+    "weighted_f1": 1.0,
+    "precision_macro": 1.0,
+    "recall_macro": 1.0,
+    "train_time_sec": 0.010390758514404297,
+    "prediction_time_sec": 0.0028145313262939453,
+    "model_size_kb": 22.7548828125,
+    "performance_score": 100.0,
+    "efficiency_score": 99.31368591308595,
+    "suitability_score": 100,
+    "final_score": 99.8627371826172,
+    "error": ""
+  },
+  "files_expected": [
+    "completed_notebook.ipynb",
+    "submission_manifest.json",
+    "results_80R.csv",
+    "results_300R.csv if 300R was used"
+  ]
+}
