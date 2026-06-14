@@ -1,0 +1,1 @@
+The model lacked in the sentences that contained sarcastic calls. Mainly because of lack of heavy classifier like BERT or even Sentence embedding and ELMo or GloVe classifiers.
